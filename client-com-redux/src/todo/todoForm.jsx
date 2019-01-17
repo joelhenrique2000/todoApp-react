@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '../template/grid';
 import IconButton from '../template/iconButton';
 import { connect } from 'react-redux'
-import { changeDescription } from './todoActions'
+import { changeDescription } from '../actions/todoAction';
 import { bindActionCreators  } from 'redux';
 
 const TodoForm = props => {
