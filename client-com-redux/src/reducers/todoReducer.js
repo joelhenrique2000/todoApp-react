@@ -1,3 +1,5 @@
+import actionType from '../constants/actionType'
+
 const INITIAL_STATE = { description: '', list: [] }
 
 export default (state = INITIAL_STATE, action) => {
