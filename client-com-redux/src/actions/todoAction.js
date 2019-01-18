@@ -1,5 +1,6 @@
 import actionType from '../constants/actionType'
 import axios from 'axios'
+import { resolve } from 'url';
 
 const URL = 'http://localhost:3003/api/todos'
 
@@ -9,10 +10,14 @@ export const changeDescription = event => ({
 })
 
 export const search = () => {
-    const request = axios.get(`${URL}?sort=-createdAt`)
-    return {
-        type: 'TODO_SEARCHED',
-        payload: request
+    return (dispatch, getState) => {
+        const description = getState().todo.description
+        const search = description ? `&description__regex=/${description}/` : ''
+        const request = axios.get(`${URL}?sort=-createdAt${search}`)
+            .then(resp => dispatch({
+                type: 'TODO_SEARCHED',
+                payload: resp.data
+            }))
     }
 }
 
@@ -58,5 +63,13 @@ export const remove = (todo) => {
 }
 
 export const clear = () => {
-    return {type: 'TODO_CLEAR'}
+    ///return [{type: 'TODO_CLEAR'}, search()]
+    return function(dispatch) {
+        dispatch({
+            type: 'TODO_CLEAR'
+        })
+        dispatch(
+            search()
+        )
+    }
 }
